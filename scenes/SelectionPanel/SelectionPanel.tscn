@@ -1,0 +1,135 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/SelectionPanel/SelectionPanel.gd" type="Script" id=1]
+[ext_resource path="res://scenes/SelectionPanel/PanelUpgrade/PanelUpgrade.tscn" type="PackedScene" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0, 0, 0, 1 )
+
+[node name="SelectionPanel" type="Panel"]
+anchor_right = 0.25
+anchor_bottom = 0.286111
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 152.0
+margin_bottom = 94.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel1" type="PanelContainer" parent="MarginContainer/GridContainer"]
+margin_right = 45.0
+margin_bottom = 41.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 2 )
+
+[node name="PanelUpgrade" parent="MarginContainer/GridContainer/Panel1" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 45.0
+margin_bottom = 41.0
+upgrade_id = 1
+
+[node name="Panel2" type="PanelContainer" parent="MarginContainer/GridContainer"]
+margin_left = 49.0
+margin_right = 94.0
+margin_bottom = 41.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 3 )
+
+[node name="PanelUpgrade" parent="MarginContainer/GridContainer/Panel2" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 45.0
+margin_bottom = 41.0
+upgrade_id = -1
+
+[node name="Panel3" type="PanelContainer" parent="MarginContainer/GridContainer"]
+margin_left = 98.0
+margin_right = 143.0
+margin_bottom = 41.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 3 )
+
+[node name="PanelUpgrade" parent="MarginContainer/GridContainer/Panel3" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 45.0
+margin_bottom = 41.0
+upgrade_id = -1
+
+[node name="Panel4" type="PanelContainer" parent="MarginContainer/GridContainer"]
+margin_top = 45.0
+margin_right = 45.0
+margin_bottom = 86.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 3 )
+
+[node name="PanelUpgrade" parent="MarginContainer/GridContainer/Panel4" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 45.0
+margin_bottom = 41.0
+upgrade_id = -1
+
+[node name="Panel5" type="PanelContainer" parent="MarginContainer/GridContainer"]
+margin_left = 49.0
+margin_top = 45.0
+margin_right = 94.0
+margin_bottom = 86.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 3 )
+
+[node name="PanelUpgrade" parent="MarginContainer/GridContainer/Panel5" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 45.0
+margin_bottom = 41.0
+upgrade_id = -1
+
+[node name="Panel6" type="PanelContainer" parent="MarginContainer/GridContainer"]
+margin_left = 98.0
+margin_top = 45.0
+margin_right = 143.0
+margin_bottom = 86.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 3 )
+
+[node name="PanelUpgrade" parent="MarginContainer/GridContainer/Panel6" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 45.0
+margin_bottom = 41.0
+upgrade_id = -1

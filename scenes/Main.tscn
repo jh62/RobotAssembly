@@ -1,0 +1,120 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://sprites/mockup.png" type="Texture" id=1]
+[ext_resource path="res://scenes/Main.gd" type="Script" id=2]
+[ext_resource path="res://scenes/PreviewPanel/PreviewPanel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/CentralPanel/CentralPanel.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/SelectionPanel/SelectionPanel.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/Entities.gd" type="Script" id=6]
+[ext_resource path="res://scenes/Base/Base.tscn" type="PackedScene" id=7]
+
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, -4, 224.19, 0, 0, 0, 0, -4, 167.048, 0, 0, 0, 0, 44, 167.048, 0, 0, 0, 0, 44, 109.905, 0, 0, 0, 0, 92, 109.905, 0, 0, 0, 0, 92, 52.7619, 0, 0, 0, 0, 140, 52.7619, 0, 0, 0, 0, 140, -4.38095, 0, 0, 0, 0, 192, -4.38095 )
+}
+
+[sub_resource type="Curve2D" id=3]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 232, 224, 0, 0, 0, 0, 268, 204, 0, 0, 0, 0, 320, 188, 0, 0, 0, 0, 356, 172, 0, 0, 0, 0, 388, 136, 0, 0, 0, 0, 424, 104, 0, 0, 0, 0, 428, 60 )
+}
+
+[sub_resource type="Curve2D" id=4]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 196, 216, 0, 0, 0, 0, 192, 180, 0, 0, 0, 0, 212, 152, 0, 0, 0, 0, 248, 128, 0, 0, 0, 0, 296, 104, 0, 0, 0, 0, 368, 96, 0, 0, 0, 0, 404, 60 )
+}
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 0, 0, 1 )
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Map" type="Node2D" parent="."]
+
+[node name="Path2D" type="Path2D" parent="Map"]
+self_modulate = Color( 0.501961, 0.6, 1, 0.701961 )
+position = Vector2( 216, 39.68 )
+scale = Vector2( 1, 0.84 )
+curve = SubResource( 1 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Map/Path2D"]
+position = Vector2( -4, 224.19 )
+rotate = false
+lookahead = 1.0
+
+[node name="Path2D2" type="Path2D" parent="Map"]
+curve = SubResource( 3 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Map/Path2D2"]
+position = Vector2( 232, 224 )
+rotation = -0.507094
+
+[node name="Path2D3" type="Path2D" parent="Map"]
+curve = SubResource( 4 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Map/Path2D3"]
+position = Vector2( 196, 216 )
+rotation = -1.68145
+
+[node name="Entities" type="YSort" parent="."]
+position = Vector2( 40, 88 )
+script = ExtResource( 6 )
+
+[node name="BasePlayer" parent="Entities" instance=ExtResource( 7 )]
+position = Vector2( 172, 164 )
+production_rate = 1.0
+path_node = NodePath("../../Map")
+
+[node name="BaseEnemy" parent="Entities" instance=ExtResource( 7 )]
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( 388, -52 )
+production_rate = 1.0
+side = 1
+path_node = NodePath("../../Map")
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="TextureRect" type="TextureRect" parent="UI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelWeaponPreview" parent="UI" instance=ExtResource( 3 )]
+
+[node name="PanelPerkPreview" parent="UI" instance=ExtResource( 3 )]
+anchor_left = 0.725
+anchor_right = 1.0
+upgrade_type = 1
+
+[node name="CentralPanel" parent="UI" instance=ExtResource( 4 )]
+
+[node name="PanelWeapons" parent="UI" instance=ExtResource( 5 )]
+anchor_right = 0.275
+anchor_bottom = 0.333333
+
+[node name="PanelPerks" parent="UI" instance=ExtResource( 5 )]
+anchor_left = 0.725
+anchor_right = 1.0
+anchor_bottom = 0.333333
+upgrade_type = 1
+
+[node name="ButtonExit" type="Button" parent="UI"]
+margin_left = 608.0
+margin_top = 332.0
+margin_right = 640.0
+margin_bottom = 360.0
+custom_styles/normal = SubResource( 2 )
+text = "X"
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+[connection signal="on_mech_spawned" from="Entities/BasePlayer" to="Entities" method="_on_BasePlayer_on_mech_spawned"]
+[connection signal="on_mech_spawned" from="Entities/BaseEnemy" to="Entities" method="_on_BaseEnemy_on_mech_spawned"]
+[connection signal="button_up" from="UI/ButtonExit" to="." method="_on_Button_button_up"]
