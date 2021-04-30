@@ -30,7 +30,6 @@ func get_drag_data(position: Vector2):
 	}
 
 	set_drag_preview(control)
-
 	return data
 
 func set_updgrade_type(type) -> void:
@@ -49,7 +48,6 @@ func set_upgrade_id(id : int) -> void:
 			upgrade = Upgrades.PerkRef.get(upgrade_id, false)
 
 	if upgrade:
-#		if $TextureRect != null:
 		match upgrade_type:
 			Upgrades.Type.WEAPON:
 				$TextureRect.texture = upgrade.get(Upgrades.WeaponProperty.ICON)

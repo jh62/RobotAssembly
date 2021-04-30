@@ -33,9 +33,12 @@ config/icon="res://icon.png"
 
 [autoload]
 
+Constants="*res://autoload/Constants.gd"
 Signals="*res://autoload/Signals.gd"
-Side="*res://autoload/Side.gd"
 Upgrades="*res://autoload/Upgrades.gd"
+Groups="*res://autoload/Groups.gd"
+Side="*res://autoload/Side.gd"
+SoundManager="*res://autoload/SoundManager.gd"
 Player="*res://autoload/Player.gd"
 
 [display]
@@ -72,12 +75,17 @@ texture={
 
 [layer_names]
 
-2d_physics/layer_2="player"
-2d_physics/layer_3="enemy"
+2d_physics/layer_1="world"
+2d_physics/layer_2="mechs"
+2d_physics/layer_3="bases"
 
 [rendering]
 
 quality/driver/driver_name="GLES2"
+quality/intended_usage/framebuffer_allocation=0
+quality/intended_usage/framebuffer_allocation.mobile=0
+quality/2d/use_pixel_snap=true
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
+batching/precision/uv_contract=true
 environment/default_environment="res://default_env.tres"

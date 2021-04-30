@@ -17,3 +17,7 @@ func drop_data(position: Vector2, data) -> void:
 	$TextureRect.texture = data["texture"]
 	upgrade_id = data["upgrade_id"]
 	emit_signal("on_data_dropped")
+
+func clear() -> void:
+	$TextureRect.texture = null
+	upgrade_id = -1

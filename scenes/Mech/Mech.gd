@@ -1,19 +1,20 @@
 extends Area2D
 class_name Mech
 
+signal on_mech_die(position)
+
 const LASER_BEAM := preload("res://scenes/LaserBeam/LaserBeam.tscn")
-const TEXTURE_ENEMY := preload("res://scenes/Mech/MechEnemyTexture.tres")
-const TEXTURE_PLAYER := preload("res://scenes/Mech/MechPlayerTexture.tres")
+const TEXTURE := preload("res://scenes/Mech/MechPlayerTexture.tres")
 
 const TARGET_SCAN_DELAY_SECONDS := 2.0
 
-export var lookeahed := 25
 export var side := Side.PLAYER
 
 onready var health_bar := $ProgressBar
+onready var lookeahed : float = $CollisionShape2D.shape.radius * 2
 
-var hitpoints := 10.0
-var speed := .1
+var hitpoints := 20.0
+var speed := 20
 var damage := .5
 var fire_rate := 1.0
 var crit_chance := .1
@@ -22,83 +23,104 @@ var weapons := []
 var perks := []
 
 var _target : Node2D
-var _target_scan_time := 0.0
 
-var _path_follow : PathFollow2D
-var _path_offset := 0.0
-var _path_dir := 1
+var tilemap : TileMap
+var _path : PoolVector2Array
+var _path_idx := 0
+var destination : Vector2
 
 func _ready() -> void:
+	add_to_group(Groups.GROUP_MECH)
 	health_bar.max_value = hitpoints
 	health_bar.value = hitpoints
+	$LaserBeam.side = side
 
 	match side:
 		Side.PLAYER:
-			_path_dir = 1
-			$Sprite.texture = TEXTURE_PLAYER
-		Side.ENEMY:
-			_path_dir = -1
-			$Sprite.texture = TEXTURE_ENEMY
+			$Sprite.material = preload("res://scenes/Mech/player_side.tres")
 
-	_path_follow.unit_offset = 1.0 if side == Side.PLAYER else 0.0
-	global_position = _path_follow.global_position
+	get_new_path()
+
+	for w in weapons:
+		if w != -1:
+			damage += Upgrades.WeaponRef[w][Upgrades.WeaponProperty.DAMAGE]
+
+	for p in perks:
+		if p != -1:
+			speed += Upgrades.PerkRef[p][Upgrades.PerkProperty.SPEED]
 
 func _process(delta: float) -> void:
 	health_bar.value = hitpoints
 
-	if _target_scan_time > TARGET_SCAN_DELAY_SECONDS:
-		_target_scan_time = 0
-
-		var targets := get_overlapping_areas()
-
-		for t in targets:
-			if t.side == side:
-				continue
-
-			var d : float = t.global_position.distance_to(global_position)
-			if _target == null || d < _target.global_position.distance_to(global_position):
-				_target = t
-				break
-	else:
-		_target_scan_time += delta
-
 	if _target != null:
-		$LaserBeam.shoot_at(_target.global_position)
-		return
-
-	var next_step := get_next_step(delta)
-	$RayCast2D.cast_to = global_position.direction_to(next_step).round() * lookeahed
-
-	if $RayCast2D.is_colliding():
-		var m := $RayCast2D.get_collider() as Mech
-		if m == null || m.hitpoints <= 0:
+		if _target.global_position.distance_to(global_position) > lookeahed || _target.hitpoints <= 0:
 			_target = null
-		elif m.side != side:
-			_target = m
+		else:
+			return
 
-	move_along_path(delta)
+	move_toward_path(delta)
 
-func hurt() -> void:
-	hitpoints -= damage
+#func get_damage() -> float:
+#	var d := damage
+#	for w in weapons:
+#		if w == -1:
+#			continue
+#		d += Upgrades.WeaponRef[w][Upgrades.WeaponProperty.DAMAGE]
+#	return d
+
+func on_attacked_by(attacker) -> void:
+	hitpoints -= attacker.damage
 	if hitpoints <= 0:
+		emit_signal("on_mech_die", global_position)
 		queue_free()
 
-func move_along_path(delta) -> void:
-	_path_offset += speed * _path_dir * delta
-	_path_offset = wrapf(_path_offset, 0.0, 1.0)
-	_path_follow.unit_offset = _path_offset
-	global_position =_path_follow.global_position
+func get_new_path() -> void:
+	_path = tilemap.get_waypoints(global_position, destination)
+	_path_idx = 0
 
-func get_next_step(delta : float) -> Vector2:
-	var offset := _path_offset + speed * delta * _path_dir
-	_path_follow.unit_offset = offset
-	var new_pos := _path_follow.global_position
-	return new_pos
+	for p in _path:
+		var weight = tilemap.astar.get_point_weight_scale(tilemap.id(p))
+		tilemap.astar.set_point_weight_scale(tilemap.id(p), weight + 1)
+
+func move_toward_path(delta : float) -> void:
+	if _path.empty() || _path_idx >= _path.size():
+		return
+
+	var w := tilemap.map_to_world(_path[_path_idx])
+	var dist := global_position.distance_to(w)
+
+	if dist > 1:
+		global_position = global_position.move_toward(w, delta * speed)
+		var look_at := global_position.direction_to(w).round()
+
+		match look_at:
+			Vector2(0,-1):
+				$AnimationPlayer.play("idle_n")
+			Vector2(0,1):
+				$AnimationPlayer.play("idle_s")
+			Vector2(1,0):
+				$AnimationPlayer.play("idle_e")
+			Vector2(-1,0):
+				$AnimationPlayer.play("idle_w")
+			Vector2(1,-1):
+				$AnimationPlayer.play("idle_ne")
+			Vector2(1,1):
+				$AnimationPlayer.play("idle_se")
+			Vector2(-1,1):
+				$AnimationPlayer.play("idle_sw")
+			Vector2(-1,-1):
+				$AnimationPlayer.play("idle_nw")
+	else:
+		var weight = tilemap.get_point_weight(global_position)
+		tilemap.set_point_weight(w, weight - 1)
+		_path_idx += 1
 
 func _on_Timer_timeout() -> void:
 	if _target == null:
 		return
+
 	$LaserBeam.shoot_at(_target.global_position)
+	_target.on_attacked_by(self)
 
 func _on_Mech_area_entered(area: Area2D) -> void:
 	if area.side == side:
@@ -106,3 +128,15 @@ func _on_Mech_area_entered(area: Area2D) -> void:
 	if _target == null || area.global_position.distance_to(global_position) < _target.global_position.distance_to(global_position):
 		_target = area
 		return
+
+func _on_TimerScan_timeout() -> void:
+	var areas := get_overlapping_areas()
+
+	for t in areas:
+		if t.side == side:
+			continue
+
+		var d : float = t.global_position.distance_to(global_position)
+		if _target == null || t.is_in_group(Groups.GROUP_BASE) || d < _target.global_position.distance_to(global_position):
+			_target = t
+			break
