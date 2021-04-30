@@ -1,4 +1,10 @@
 extends Node
 
-const PLAYER := 0
-const ENEMY := 1
+const TEAM_PLAYER := 0
+const TEAM_ENEMY := 1
+
+enum Team {
+	PLAYER = TEAM_PLAYER,
+	ENEMY = TEAM_ENEMY
+}
+

@@ -17,7 +17,7 @@ _global_script_classes=[ {
 "base": "Area2D",
 "class": "Mech",
 "language": "GDScript",
-"path": "res://scenes/Mech/Mech.gd"
+"path": "res://scenes/Mech/Mech_v2.gd"
 } ]
 _global_script_class_icons={
 "Base": "",
@@ -36,9 +36,10 @@ config/icon="res://icon.png"
 Constants="*res://autoload/Constants.gd"
 Signals="*res://autoload/Signals.gd"
 Upgrades="*res://autoload/Upgrades.gd"
+SoundManager="*res://autoload/SoundManager.gd"
+Robots="*res://autoload/Robots.gd"
 Groups="*res://autoload/Groups.gd"
 Side="*res://autoload/Side.gd"
-SoundManager="*res://autoload/SoundManager.gd"
 Player="*res://autoload/Player.gd"
 
 [display]
@@ -84,8 +85,9 @@ texture={
 quality/driver/driver_name="GLES2"
 quality/intended_usage/framebuffer_allocation=0
 quality/intended_usage/framebuffer_allocation.mobile=0
-quality/2d/use_pixel_snap=true
+2d/snapping/use_gpu_pixel_snap=true
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
 batching/precision/uv_contract=true
 environment/default_environment="res://default_env.tres"
+quality/2d/use_pixel_snap=true

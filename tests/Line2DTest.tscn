@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://sprites/robot-spritesheet.png" type="Texture" id=1]
+[ext_resource path="res://tests/Line2DTest.gd" type="Script" id=2]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 14, 19 )
+
+[node name="Line2D" type="Line2D" parent="Sprite"]
+points = PoolVector2Array( 0, 0, 0, 0 )
+width = 2.0
+
+[node name="Sprite2" type="Sprite" parent="."]
+self_modulate = Color( 0.803922, 0.0392157, 0.996078, 1 )
+position = Vector2( 188.673, 0 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 14, 19 )
+
+[node name="Line2D" type="Line2D" parent="Sprite2"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true

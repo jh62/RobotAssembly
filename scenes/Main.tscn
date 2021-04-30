@@ -10,7 +10,7 @@
 [ext_resource path="res://scenes/PanelStats/PanelStats.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/Tilemap/TileMap.gd" type="Script" id=9]
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 0, 0, 1 )
 
 [node name="Main" type="Node2D"]
@@ -45,8 +45,8 @@ position = Vector2( 224, 224 )
 
 [node name="BaseEnemy" parent="Entities" instance=ExtResource( 7 )]
 position = Vector2( 416, 80 )
-hitpoints = 9999.0
 side = 1
+hitpoints = 9999.0
 
 [node name="UI" type="CanvasLayer" parent="."]
 layer = 100
@@ -83,12 +83,13 @@ margin_left = 608.0
 margin_top = 332.0
 margin_right = 640.0
 margin_bottom = 360.0
-custom_styles/normal = SubResource( 4 )
+custom_styles/normal = SubResource( 1 )
 text = "X"
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
+
 [connection signal="on_mech_spawned" from="Entities" to="Map/TileMap" method="_on_Entities_on_mech_spawned"]
 [connection signal="on_mech_spawned" from="Entities/BasePlayer" to="Entities" method="_on_BasePlayer_on_mech_spawned"]
 [connection signal="on_mech_spawned" from="Entities/BaseEnemy" to="Entities" method="_on_BaseEnemy_on_mech_spawned"]

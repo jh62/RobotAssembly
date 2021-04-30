@@ -1,11 +1,11 @@
 [gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://sprites/robot-spritesheet.png" type="Texture" id=1]
-[ext_resource path="res://scenes/Mech/Mech.gd" type="Script" id=2]
-[ext_resource path="res://scenes/LaserBeam/LaserBeam.tscn" type="PackedScene" id=3]
+[ext_resource path="res://sprites/res/base_font_8.tres" type="DynamicFont" id=2]
+[ext_resource path="res://scenes/Mech/Mech_v2.gd" type="Script" id=3]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 50.0
+[sub_resource type="CircleShape2D" id=12]
+radius = 30.0
 
 [sub_resource type="Animation" id=2]
 resource_name = "idle_e"
@@ -161,25 +161,25 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 anti_aliasing = false
 
-[node name="Mech" type="Area2D"]
+[node name="MechVII" type="Area2D"]
 collision_layer = 2
 collision_mask = 6
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+shape = SubResource( 12 )
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
-cast_to = Vector2( 0, -50 )
-collision_mask = 6
-collide_with_areas = true
-collide_with_bodies = false
-
-[node name="LaserBeam" parent="." instance=ExtResource( 3 )]
+[node name="Line2D" type="Line2D" parent="."]
+position = Vector2( -0.5425, 0 )
+scale = Vector2( 0.4375, 1 )
+points = PoolVector2Array( 0, 0, 0, 0 )
+width = 1.24
+default_color = Color( 0.929412, 0, 0, 1 )
+texture_mode = 2
+antialiased = true
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
-offset = Vector2( 8, 0 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 14, 19 )
 
@@ -193,12 +193,12 @@ anims/idle_se = SubResource( 7 )
 anims/idle_sw = SubResource( 8 )
 anims/idle_w = SubResource( 9 )
 
-[node name="Timer" type="Timer" parent="."]
+[node name="TimerAttack" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
 
 [node name="TimerScan" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 0.75
 autostart = true
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
@@ -214,6 +214,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="area_entered" from="." to="." method="_on_Mech_area_entered"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[node name="Label" type="Label" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -12.0669
+margin_top = -20.0669
+margin_right = 37.9331
+margin_bottom = -6.06694
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+text = "Critical!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="on_critical_hit" from="." to="." method="_on_MechVII_on_critical_hit"]
+[connection signal="timeout" from="TimerAttack" to="." method="_on_TimerAttack_timeout"]
 [connection signal="timeout" from="TimerScan" to="." method="_on_TimerScan_timeout"]

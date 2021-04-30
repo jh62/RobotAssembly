@@ -114,7 +114,7 @@ const PerkRef = {
 		PerkProperty.NAME: "Armster",
 		PerkProperty.ICON: preload("res://sprites/res/upgrade_icons/perks/perk2.tres"),
 		PerkProperty.SPEED: 0.00,
-		PerkProperty.ARMOR: 0.03,
+		PerkProperty.ARMOR: 1000.0,
 		Property.COST: 50,
 		Property.PRODUCTION_TIME: .089
 	},

@@ -21,4 +21,3 @@ func _on_upgrade_changed(upgrade_type, upgrade_id) -> void:
 
 func _on_PowerModule_collected(amount : int) -> void:
 	funds += amount
-	print_debug("reached")

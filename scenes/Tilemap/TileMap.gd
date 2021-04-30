@@ -45,10 +45,10 @@ func _on_Entities_on_mech_spawned(mech : Mech) -> void:
 	var dest_points : PoolVector2Array
 
 	match mech.side:
-		Side.PLAYER:
+		Side.TEAM_PLAYER:
 			spawn_points = $BasePlayer.get_used_cells()
 			dest_points = $BaseEnemy.get_used_cells()
-		Side.ENEMY:
+		Side.TEAM_ENEMY:
 			spawn_points = $BaseEnemy.get_used_cells()
 			dest_points = $BasePlayer.get_used_cells()
 

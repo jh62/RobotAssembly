@@ -51,7 +51,7 @@ func _on_upgrade_changed(upgrade_type = -1, upgrade_id = -1) -> void:
 	label_time.text = str((weapon_time + perk_time) * production_quantity)
 
 func _on_ButtonBuild_button_up() -> void:
-	Signals.emit_signal("on_build_requested", production_quantity, Player.active_weapon, Player.active_perk, float(label_time.text))
+	Signals.emit_signal("on_build_requested", Robots.MECH_V2, production_quantity, Player.active_weapon, Player.active_perk, float(label_time.text))
 
 func _on_build_begin(amount : int, production_time : float) -> void:
 	label_queue.text = "%s/%s" % [amount, Constants.MAX_PRODUCTION_QUEUE]

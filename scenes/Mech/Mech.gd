@@ -1,5 +1,5 @@
 extends Area2D
-class_name Mech
+#class_name Mech
 
 signal on_mech_die(position)
 
@@ -8,7 +8,7 @@ const TEXTURE := preload("res://scenes/Mech/MechPlayerTexture.tres")
 
 const TARGET_SCAN_DELAY_SECONDS := 2.0
 
-export var side := Side.PLAYER
+export var side := Robots.Side.ENEMY
 
 onready var health_bar := $ProgressBar
 onready var lookeahed : float = $CollisionShape2D.shape.radius * 2
@@ -17,7 +17,7 @@ var hitpoints := 20.0
 var speed := 20
 var damage := .5
 var fire_rate := 1.0
-var crit_chance := .1
+var crit_chance := .03
 
 var weapons := []
 var perks := []
