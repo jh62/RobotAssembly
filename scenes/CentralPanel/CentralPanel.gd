@@ -1,10 +1,10 @@
-extends Panel
+extends TabContainer
 
-onready var label_quantity := $MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/Panel/Label
-onready var label_cost := $MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel/VBoxContainer/HBoxContainer/Label2
-onready var label_time := $MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel/VBoxContainer/HBoxContainer2/Label2
-onready var label_queue := $MarginContainer/VBoxContainer/Panel/HBoxContainerQueue/CenterContainer/Label
-onready var progress_queue := $MarginContainer/VBoxContainer/Panel/HBoxContainerQueue/ProgressBar
+onready var label_quantity := $Production/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/Panel/Label
+onready var label_cost := $Production/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel/VBoxContainer/HBoxContainer/Label2
+onready var label_time := $Production/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel/VBoxContainer/HBoxContainer2/Label2
+onready var label_queue := $Production/MarginContainer/VBoxContainer/Panel/HBoxContainerQueue/CenterContainer/Label
+onready var progress_queue := $Production/MarginContainer/VBoxContainer/Panel/HBoxContainerQueue/ProgressBar
 
 var production_quantity := 1 setget set_quantity
 
