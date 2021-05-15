@@ -1,9 +1,23 @@
 extends Node
 
-const available_weapons := [0, 1,2,3]
-const available_perks := [0,1,2,3,4,5]
+const available_weapons := [0,1,2,3]
+const available_perks := [0,1,2]
 
 var funds := 500
+
+var MECH = {
+	Robots.Property.HITPOINTS: 60,
+	Robots.Property.SPEED: 14,
+	Robots.Property.DAMAGE: 0,
+	Robots.Property.FIRE_RATE: 0,
+	Robots.Property.CRIT_CHANCE: 0,
+	Robots.Property.WEAPON: Upgrades.Weapon.MACHINE_GUN,
+	Robots.Property.PERK: -1,
+	Robots.Property.WEAKNESSES: [Upgrades.Weapon.LASER_GUN],
+	Robots.Property.PRODUCTION_COST: 0,
+	Robots.Property.PRODUCTION_TIME: 2.0
+}
+
 var active_weapon := -1
 var active_perk := -1
 

@@ -1,8 +1,8 @@
 extends Node
 
 enum Type {
-	WEAPON = 0,
-	PERK = 1
+	WEAPON,
+	PERK
 }
 
 enum Property{
@@ -31,13 +31,13 @@ enum WeaponProperty {
 
 const WeaponRef = {
 	Weapon.MACHINE_GUN: {
-		WeaponProperty.NAME: "Machine gun",
+		WeaponProperty.NAME: "Heavy machine gun",
 		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun1.tres"),
-		WeaponProperty.DAMAGE: 1.0,
-		WeaponProperty.FIRE_RATE: 1.0,
-		WeaponProperty.CRITICAL_CHANCE: .05,
-		Property.COST: 50,
-		Property.PRODUCTION_TIME: .25
+		WeaponProperty.DAMAGE: 10.5,
+		WeaponProperty.FIRE_RATE: .33,
+		WeaponProperty.CRITICAL_CHANCE: .025,
+		Property.COST: 285,
+		Property.PRODUCTION_TIME: .24
 	},
 	Weapon.LASER_GUN: {
 		WeaponProperty.NAME: "Laser gun",
@@ -92,8 +92,7 @@ enum PerkProperty {
 	NAME,
 	ICON,
 	SPEED,
-	ARMOR,
-	PRODUCTION_TIME
+	ARMOR
 }
 
 enum Perk {
@@ -105,7 +104,7 @@ const PerkRef = {
 	Perk.MOBILITY_1: {
 		PerkProperty.NAME: "Moobster",
 		PerkProperty.ICON: preload("res://sprites/res/upgrade_icons/perks/perk1.tres"),
-		PerkProperty.SPEED: 0.05,
+		PerkProperty.SPEED: 37.07,
 		PerkProperty.ARMOR: 0.00,
 		Property.COST: 50,
 		Property.PRODUCTION_TIME: .05

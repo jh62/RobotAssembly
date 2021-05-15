@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/CentralPanel/CentralPanel.gd" type="Script" id=1]
+[ext_resource path="res://sprites/res/base_font_16px.tres" type="DynamicFont" id=2]
+[ext_resource path="res://sprites/res/base_font_12px.tres" type="DynamicFont" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
@@ -17,8 +19,8 @@ corner_detail = 4
 [node name="CentralPanel" type="Panel"]
 anchor_left = 0.275
 anchor_top = 0.8
-anchor_right = 0.725
-anchor_bottom = 1.0
+anchor_right = 0.529688
+anchor_bottom = 1.08889
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -39,12 +41,12 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 284.0
-margin_bottom = 68.0
+margin_right = 159.0
+margin_bottom = 100.0
 
 [node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer"]
-margin_right = 280.0
-margin_bottom = 20.0
+margin_right = 155.0
+margin_bottom = 30.0
 rect_clip_content = true
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -63,53 +65,54 @@ __meta__ = {
 }
 
 [node name="ProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/Panel/HBoxContainerQueue"]
-margin_right = 230.0
-margin_bottom = 20.0
+margin_right = 99.0
+margin_bottom = 30.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 5.0
+custom_fonts/font = ExtResource( 2 )
 step = 0.1
 
 [node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/Panel/HBoxContainerQueue"]
-margin_left = 234.0
-margin_right = 280.0
-margin_bottom = 20.0
+margin_left = 103.0
+margin_right = 155.0
+margin_bottom = 30.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/HBoxContainerQueue/CenterContainer"]
-margin_left = 4.0
-margin_top = 3.0
-margin_right = 41.0
-margin_bottom = 17.0
+margin_top = 5.0
+margin_right = 52.0
+margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
+custom_fonts/font = ExtResource( 2 )
 text = "50/50"
 align = 1
 valign = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 24.0
-margin_right = 280.0
-margin_bottom = 64.0
+margin_top = 34.0
+margin_right = 155.0
+margin_bottom = 96.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 60.0
-margin_bottom = 40.0
+margin_right = 41.0
+margin_bottom = 62.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
-margin_right = 60.0
-margin_bottom = 40.0
+margin_right = 41.0
+margin_bottom = 62.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
-margin_right = 60.0
-margin_bottom = 15.0
+margin_right = 41.0
+margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.75
@@ -117,6 +120,7 @@ size_flags_stretch_ratio = 0.75
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 2 )
 text = "1"
 align = 1
 valign = 1
@@ -125,36 +129,36 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
-margin_top = 19.0
-margin_right = 60.0
-margin_bottom = 40.0
+margin_top = 28.0
+margin_right = 41.0
+margin_bottom = 62.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 28.0
-margin_bottom = 21.0
+margin_right = 17.0
+margin_bottom = 34.0
 size_flags_horizontal = 3
 text = "-"
 
 [node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 32.0
-margin_right = 60.0
-margin_bottom = 21.0
+margin_left = 21.0
+margin_right = 41.0
+margin_bottom = 34.0
 size_flags_horizontal = 3
 text = "+"
 
 [node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 64.0
-margin_right = 215.0
-margin_bottom = 40.0
+margin_left = 45.0
+margin_right = 97.0
+margin_bottom = 62.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.5
 
 [node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2"]
-margin_right = 151.0
-margin_bottom = 40.0
+margin_right = 52.0
+margin_bottom = 62.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel"]
 anchor_right = 1.0
@@ -164,64 +168,69 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel/VBoxContainer"]
-margin_right = 151.0
-margin_bottom = 18.0
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel/VBoxContainer"]
+margin_right = 52.0
+margin_bottom = 29.0
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel/VBoxContainer/HBoxContainer"]
 margin_top = 2.0
-margin_right = 73.0
-margin_bottom = 16.0
+margin_right = 52.0
+margin_bottom = 12.0
 size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
 text = "Total cost:"
 align = 1
 valign = 1
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel/VBoxContainer/HBoxContainer"]
-margin_left = 77.0
-margin_top = 2.0
-margin_right = 151.0
-margin_bottom = 16.0
+margin_top = 16.0
+margin_right = 52.0
+margin_bottom = 26.0
 size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
 text = "$0"
 align = 1
 valign = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel/VBoxContainer"]
-margin_top = 22.0
-margin_right = 151.0
-margin_bottom = 40.0
+[node name="HBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel/VBoxContainer"]
+margin_top = 33.0
+margin_right = 52.0
+margin_bottom = 62.0
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel/VBoxContainer/HBoxContainer2"]
 margin_top = 2.0
-margin_right = 73.0
-margin_bottom = 16.0
+margin_right = 52.0
+margin_bottom = 12.0
 size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
 text = "Total time:"
 align = 1
 valign = 1
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/Panel/VBoxContainer/HBoxContainer2"]
-margin_left = 77.0
-margin_top = 2.0
-margin_right = 151.0
-margin_bottom = 16.0
+margin_top = 16.0
+margin_right = 52.0
+margin_bottom = 26.0
 size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
 text = "0 ms"
 align = 1
 valign = 1
 
 [node name="ButtonBuild" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 223.0
-margin_right = 276.0
-margin_bottom = 40.0
+margin_left = 101.0
+margin_right = 155.0
+margin_bottom = 62.0
 size_flags_horizontal = 6
 size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
 text = "BUILD"
+
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/Panel" to="." method="_on_Panel_gui_input"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Button" to="." method="_on_Button_button_up"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Button2" to="." method="_on_Button2_button_up"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/HBoxContainer/ButtonBuild" to="." method="_on_ButtonBuild_button_up"]

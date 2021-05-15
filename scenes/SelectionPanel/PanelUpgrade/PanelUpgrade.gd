@@ -1,7 +1,7 @@
 tool
 extends Panel
 
-export var upgrade_type := Upgrades.Type.WEAPON setget set_updgrade_type
+export(Upgrades.Type) var upgrade_type = Upgrades.Type.WEAPON setget set_updgrade_type
 export var upgrade_id := 0 setget set_upgrade_id
 
 func _ready() -> void:
@@ -25,8 +25,8 @@ func get_drag_data(position: Vector2):
 
 	var data = {
 		"upgrade_type": upgrade_type,
-		"upgrade_id": upgrade_id,
-		"texture": drag_texture.texture
+		"upgrade_id": upgrade_id
+#		"texture": drag_texture.texture
 	}
 
 	set_drag_preview(control)

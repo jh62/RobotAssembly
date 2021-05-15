@@ -57,7 +57,7 @@ func _process(delta: float) -> void:
 	var weapon = order.get(Upgrades.Type.WEAPON, -1)
 	var perk = order.get(Upgrades.Type.PERK, -1)
 
-	var mech : Mech = MECH.instance()
+	var mech = MECH.instance()
 	mech.side = side
 	mech.initialize(blueprint, weapon, perk)
 
@@ -75,39 +75,6 @@ func on_attacked_by(attacker) -> void:
 func set_active(active : bool) -> void:
 	is_active = active
 
-func _on_Timer_Production_timeout() -> void:
-	if !is_active:
-		return
-	if production_queue.empty():
-		return
-
-	if order != null:
-		if order_time < order.get(Upgrades.Property.PRODUCTION_TIME):
-			order_time += get_process_delta_time()
-			if side == Side.TEAM_PLAYER:
-				Signals.emit_signal("on_queue_step", order_time)
-			return
-	else:
-		order = production_queue.back()
-		order_time = 0.0
-		return
-
-	var blueprint = order.get("blueprint")
-	var weapon = order.get(Upgrades.Type.WEAPON, -1)
-	var perk = order.get(Upgrades.Type.PERK, -1)
-
-	var mech : Mech = MECH.instance()
-	mech.side = side
-	mech.initialize(blueprint, weapon, perk)
-
-	order = null
-	production_queue.pop_back()
-
-	emit_signal("on_mech_spawned", mech)
-
-	if side == Side.TEAM_PLAYER:
-		Signals.emit_signal("on_order_completed", production_queue.size())
-
 func _on_build_requested(blueprint : Dictionary, amount : int, weapon : int, perk : int, time : float) -> void:
 	var rest = Constants.MAX_PRODUCTION_QUEUE - production_queue.size()
 	var to_make = min(amount, rest)
@@ -116,6 +83,12 @@ func _on_build_requested(blueprint : Dictionary, amount : int, weapon : int, per
 		return
 
 	var production_rate = time / to_make
+
+	if weapon == -1:
+		weapon = blueprint.get(Robots.Property.WEAPON)
+
+	if perk == -1:
+		perk = blueprint.get(Robots.Property.PERK)
 
 	var order = {
 		"blueprint": blueprint,

@@ -11,31 +11,20 @@ enum Property {
 	PERK,
 	WEAKNESSES,
 	ORDERS,
+	PRODUCTION_COST,
 	PRODUCTION_TIME
-}
-
-# Player blueprints
-const MECH_V2 = {
-	Property.HITPOINTS: 30,
-	Property.SPEED: 20,
-	Property.DAMAGE: 1.0,
-	Property.FIRE_RATE: 0.0,
-	Property.CRIT_CHANCE: 0.0,
-	Property.WEAPON: -1,
-	Property.PERK: -1,
-	Property.WEAKNESSES: [],
-	Property.PRODUCTION_TIME: .33
 }
 
 # Enemy blueprints
 const MECH_I = {
-	Property.HITPOINTS: 30,
-	Property.SPEED: 20,
-	Property.DAMAGE: 1.0,
-	Property.FIRE_RATE: 0.0,
-	Property.CRIT_CHANCE: 0.0,
+	Property.HITPOINTS: 60,
+	Property.SPEED: 14,
+	Property.DAMAGE: 0,
+	Property.FIRE_RATE: 0,
+	Property.CRIT_CHANCE: 0,
 	Property.WEAPON: Upgrades.Weapon.MACHINE_GUN,
 	Property.PERK: -1,
 	Property.WEAKNESSES: [Upgrades.Weapon.LASER_GUN],
-	Property.PRODUCTION_TIME: .33
+	Property.PRODUCTION_COST: 0,
+	Property.PRODUCTION_TIME: 2.0
 }

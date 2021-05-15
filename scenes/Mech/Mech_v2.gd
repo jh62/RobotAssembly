@@ -7,6 +7,7 @@ signal on_critical_hit
 onready var health_bar := $ProgressBar
 onready var lookeahed : float = $CollisionShape2D.shape.radius
 onready var fire_tracer := $Line2D # provisorio
+onready var timer_attack := $TimerAttack
 
 export(Side.Team) var side setget set_side
 export(Upgrades.Weapon) var weapon
@@ -33,10 +34,12 @@ func _ready() -> void:
 	add_to_group(Groups.GROUP_MECH)
 	get_new_path()
 	health_bar.max_value = max_hitpoints
+	timer_attack.start(fire_rate)
 
 	match side:
 		Side.TEAM_PLAYER:
 			$Sprite.material = preload("res://scenes/Mech/player_side.tres")
+
 
 func initialize(model_blueprint : Dictionary, module_weapon : int, module_perk : int) -> void:
 	assert(model_blueprint != null)
@@ -44,9 +47,9 @@ func initialize(model_blueprint : Dictionary, module_weapon : int, module_perk :
 	max_hitpoints = model_blueprint.get(Robots.Property.HITPOINTS)
 	hitpoints = model_blueprint.get(Robots.Property.HITPOINTS)
 	speed = model_blueprint.get(Robots.Property.SPEED)
-	damage = model_blueprint.get(Robots.Property.DAMAGE)
-	fire_rate = model_blueprint.get(Robots.Property.FIRE_RATE)
-	crit_chance = model_blueprint.get(Robots.Property.CRIT_CHANCE)
+#	damage = model_blueprint.get(Robots.Property.DAMAGE)
+#	fire_rate = model_blueprint.get(Robots.Property.FIRE_RATE)
+#	crit_chance = model_blueprint.get(Robots.Property.CRIT_CHANCE)
 	weapon = model_blueprint.get(Robots.Property.WEAPON)
 	perk = model_blueprint.get(Robots.Property.PERK)
 	weakness = model_blueprint.get(Robots.Property.WEAKNESSES)
@@ -62,6 +65,8 @@ func initialize(model_blueprint : Dictionary, module_weapon : int, module_perk :
 		hitpoints += Upgrades.PerkRef[module_perk][Upgrades.PerkProperty.ARMOR]
 		speed += Upgrades.PerkRef[module_perk][Upgrades.PerkProperty.SPEED]
 
+	print_debug(damage)
+
 	max_hitpoints = hitpoints
 
 	_initialized = true
@@ -73,7 +78,7 @@ func _process(delta: float) -> void:
 	health_bar.value = hitpoints
 
 	if _target != null:
-		if global_position.distance_to(_target.global_position) > lookeahed || _target.hitpoints == 0.0:
+		if global_position.distance_to(_target.global_position) > lookeahed * 2 || _target.hitpoints <= 0.0:
 			_target = null
 		else:
 			return
@@ -105,7 +110,7 @@ func move_toward_path(delta : float) -> void:
 	if _path.empty() || _path_idx >= _path.size():
 		return
 
-	var w := tilemap.map_to_world(_path[_path_idx]) + Vector2(8,0)
+	var w := tilemap.map_to_world(_path[_path_idx]) + Vector2(16,8)
 	var dist := global_position.distance_to(w)
 
 	var look_at := global_position.direction_to(w).round()
@@ -157,9 +162,12 @@ func _on_TimerAttack_timeout() -> void:
 	_target.on_attacked_by(self)
 
 	fire_tracer.points[1] = global_position.direction_to(_target.global_position) * global_position.distance_to(_target.global_position)
+	$Line2D/CPUParticles2D.emitting = true
+	$Line2D/CPUParticles2D.global_position = _target.global_position
 
-	yield(get_tree().create_timer(.12),"timeout")
+	yield(get_tree().create_timer(.25),"timeout")
 	fire_tracer.points[1] = Vector2.ZERO
+	$Line2D/CPUParticles2D.emitting = false
 
 func _on_TimerScan_timeout() -> void:
 	var areas := get_overlapping_areas()
@@ -180,3 +188,7 @@ func _on_MechVII_on_critical_hit() -> void:
 	$Label.visible = true
 	yield(get_tree().create_timer(1),"timeout")
 	$Label.visible = false
+
+# This is triggered when the players blocks/unblocks a passage tile.
+func on_passage_toggle() -> void:
+	pass

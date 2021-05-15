@@ -26,6 +26,7 @@ func get_waypoints(from : Vector2, to : Vector2) -> PoolVector2Array:
 	to = world_to_map(to)
 	var p = astar.get_point_path(id(from),id(to))
 	p.remove(0)
+
 	return p
 
 func set_point_weight(pos : Vector2, weight : float) -> void:
@@ -40,18 +41,23 @@ func id(point : Vector2) -> float:
 	var b := point.y
 	return (a + b) * (a + b + 1) / 2 + b
 
-func _on_Entities_on_mech_spawned(mech : Mech) -> void:
+func _on_Entities_on_mech_spawned(mech) -> void:
 	var spawn_points : PoolVector2Array
 	var dest_points : PoolVector2Array
 
 	match mech.side:
 		Side.TEAM_PLAYER:
-			spawn_points = $BasePlayer.get_used_cells()
-			dest_points = $BaseEnemy.get_used_cells()
+			spawn_points = $BasePlayer.get_used_cells_by_id(2)
+			dest_points = $BaseEnemy.get_used_cells_by_id(2)
 		Side.TEAM_ENEMY:
-			spawn_points = $BaseEnemy.get_used_cells()
-			dest_points = $BasePlayer.get_used_cells()
+			spawn_points = $BaseEnemy.get_used_cells_by_id(2)
+			dest_points = $BasePlayer.get_used_cells_by_id(2)
 
-	mech.global_position = map_to_world(spawn_points[randi()%spawn_points.size()])
-	mech.destination = map_to_world(dest_points[dest_points.size()-1])
+	mech.global_position = map_to_world(spawn_points[randi()%spawn_points.size()]) + Vector2(16,16)
+	mech.destination = map_to_world(dest_points[dest_points.size()-1]) + Vector2(16,16)
 	mech.tilemap = self
+
+
+func _on_BasePlayer_on_passage_toggle(cellv, blocked) -> void:
+	astar.set_point_disabled(id(cellv), blocked)
+	print_debug(blocked)

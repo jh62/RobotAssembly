@@ -26,7 +26,8 @@ _global_script_class_icons={
 
 [application]
 
-config/name="RobotAssembly"
+config/name="Robots Gone Rogue"
+config/description="Tower defense game where you build your robots in real time to fight off hordes of enemie's."
 run/main_scene="res://scenes/Main.tscn"
 boot_splash/bg_color=Color( 0, 0, 0, 1 )
 config/icon="res://icon.png"
@@ -35,8 +36,8 @@ config/icon="res://icon.png"
 
 Constants="*res://autoload/Constants.gd"
 Signals="*res://autoload/Signals.gd"
-Upgrades="*res://autoload/Upgrades.gd"
 SoundManager="*res://autoload/SoundManager.gd"
+Upgrades="*res://autoload/Upgrades.gd"
 Robots="*res://autoload/Robots.gd"
 Groups="*res://autoload/Groups.gd"
 Side="*res://autoload/Side.gd"
@@ -83,8 +84,7 @@ texture={
 [rendering]
 
 quality/driver/driver_name="GLES2"
-quality/intended_usage/framebuffer_allocation=0
-quality/intended_usage/framebuffer_allocation.mobile=0
+quality/intended_usage/framebuffer_allocation.mobile=2
 2d/snapping/use_gpu_pixel_snap=true
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
