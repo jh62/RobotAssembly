@@ -8,16 +8,15 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 30.0
 
-[sub_resource type="AtlasTexture" id=12]
+[sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 4 )
 region = Rect2( 69, 5, 6, 5 )
 
-[sub_resource type="Gradient" id=13]
+[sub_resource type="Gradient" id=3]
 offsets = PoolRealArray( 0, 0.953333, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 1, 0.953333, 0.953333, 0.0653595, 1, 1, 1, 0.0196078 )
 
-[sub_resource type="Animation" id=2]
-resource_name = "idle_e"
+[sub_resource type="Animation" id=4]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:region_rect")
@@ -32,8 +31,7 @@ tracks/0/keys = {
 "values": [ Rect2( 16, 0, 15, 22 ) ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "idle_n"
+[sub_resource type="Animation" id=5]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:region_rect")
@@ -48,8 +46,7 @@ tracks/0/keys = {
 "values": [ Rect2( 0, 0, 14, 19 ) ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "idle_ne"
+[sub_resource type="Animation" id=6]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:region_rect")
@@ -64,8 +61,7 @@ tracks/0/keys = {
 "values": [ Rect2( 66, 0, 15, 20 ) ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "idle_nw"
+[sub_resource type="Animation" id=7]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:region_rect")
@@ -80,8 +76,7 @@ tracks/0/keys = {
 "values": [ Rect2( 117, 0, 15, 20 ) ]
 }
 
-[sub_resource type="Animation" id=6]
-resource_name = "idle_s"
+[sub_resource type="Animation" id=8]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:region_rect")
@@ -96,8 +91,7 @@ tracks/0/keys = {
 "values": [ Rect2( 33, 0, 14, 18 ) ]
 }
 
-[sub_resource type="Animation" id=7]
-resource_name = "idle_se"
+[sub_resource type="Animation" id=9]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:region_rect")
@@ -112,8 +106,7 @@ tracks/0/keys = {
 "values": [ Rect2( 83, 0, 15, 21 ) ]
 }
 
-[sub_resource type="Animation" id=8]
-resource_name = "idle_sw"
+[sub_resource type="Animation" id=10]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:region_rect")
@@ -128,8 +121,7 @@ tracks/0/keys = {
 "values": [ Rect2( 100, 0, 15, 21 ) ]
 }
 
-[sub_resource type="Animation" id=9]
-resource_name = "idle_w"
+[sub_resource type="Animation" id=11]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:region_rect")
@@ -144,7 +136,7 @@ tracks/0/keys = {
 "values": [ Rect2( 49, 0, 15, 22 ) ]
 }
 
-[sub_resource type="StyleBoxFlat" id=10]
+[sub_resource type="StyleBoxFlat" id=12]
 bg_color = Color( 0.168627, 1, 0, 1 )
 border_width_left = 1
 border_width_top = 1
@@ -157,7 +149,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 anti_aliasing = false
 
-[sub_resource type="StyleBoxFlat" id=11]
+[sub_resource type="StyleBoxFlat" id=13]
 bg_color = Color( 0.207843, 0.2, 0.2, 1 )
 border_width_left = 1
 border_width_top = 1
@@ -193,13 +185,13 @@ emitting = false
 amount = 50
 lifetime = 0.25
 preprocess = 0.25
-texture = SubResource( 12 )
+texture = SubResource( 2 )
 emission_shape = 1
 emission_sphere_radius = 1.0
 spread = 180.0
 gravity = Vector2( 0, 0 )
 initial_velocity = 100.0
-color_ramp = SubResource( 13 )
+color_ramp = SubResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -207,33 +199,20 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 14, 19 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/idle_e = SubResource( 2 )
-anims/idle_n = SubResource( 3 )
-anims/idle_ne = SubResource( 4 )
-anims/idle_nw = SubResource( 5 )
-anims/idle_s = SubResource( 6 )
-anims/idle_se = SubResource( 7 )
-anims/idle_sw = SubResource( 8 )
-anims/idle_w = SubResource( 9 )
+anims/idle_e = SubResource( 4 )
+anims/idle_n = SubResource( 5 )
+anims/idle_ne = SubResource( 6 )
+anims/idle_nw = SubResource( 7 )
+anims/idle_s = SubResource( 8 )
+anims/idle_se = SubResource( 9 )
+anims/idle_sw = SubResource( 10 )
+anims/idle_w = SubResource( 11 )
 
 [node name="TimerAttack" type="Timer" parent="."]
 
 [node name="TimerScan" type="Timer" parent="."]
 wait_time = 0.75
 autostart = true
-
-[node name="ProgressBar" type="ProgressBar" parent="."]
-margin_left = -8.0
-margin_top = -18.0
-margin_right = 8.0
-margin_bottom = -16.0
-custom_styles/fg = SubResource( 10 )
-custom_styles/bg = SubResource( 11 )
-step = 0.1
-percent_visible = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="."]
 visible = false
@@ -249,6 +228,58 @@ rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "Critical!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = -20.0
+margin_top = -32.0
+margin_right = 20.0
+margin_bottom = -13.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="UpgradeIcons" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 12.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+custom_constants/separation = 6
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WeaponUpgrade" type="TextureRect" parent="VBoxContainer/UpgradeIcons"]
+margin_right = 17.0
+margin_bottom = 12.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+expand = true
+stretch_mode = 4
+
+[node name="PerkUpgrade" type="TextureRect" parent="VBoxContainer/UpgradeIcons"]
+margin_left = 23.0
+margin_right = 40.0
+margin_bottom = 12.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+expand = true
+stretch_mode = 4
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer"]
+margin_top = 17.0
+margin_right = 40.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+size_flags_vertical = 10
+custom_styles/fg = SubResource( 12 )
+custom_styles/bg = SubResource( 13 )
+step = 0.1
+percent_visible = false
 __meta__ = {
 "_edit_use_anchors_": false
 }

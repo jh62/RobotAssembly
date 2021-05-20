@@ -1,5 +1,7 @@
 extends Node
 
+const INVALID_TYPE_OR_PROPERTY := -1
+
 enum Type {
 	WEAPON,
 	PERK
@@ -26,73 +28,16 @@ enum WeaponProperty {
 	ICON,
 	DAMAGE,
 	FIRE_RATE,
-	CRITICAL_CHANCE
+	CRITICAL_CHANCE,
+	DOWNSIDES
 }
-
-const WeaponRef = {
-	Weapon.MACHINE_GUN: {
-		WeaponProperty.NAME: "Heavy machine gun",
-		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun1.tres"),
-		WeaponProperty.DAMAGE: 10.5,
-		WeaponProperty.FIRE_RATE: .33,
-		WeaponProperty.CRITICAL_CHANCE: .025,
-		Property.COST: 285,
-		Property.PRODUCTION_TIME: .24
-	},
-	Weapon.LASER_GUN: {
-		WeaponProperty.NAME: "Laser gun",
-		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun2.tres"),
-		WeaponProperty.DAMAGE: 1.33,
-		WeaponProperty.FIRE_RATE: 1.2,
-		WeaponProperty.CRITICAL_CHANCE: .1,
-		Property.COST: 50,
-		Property.PRODUCTION_TIME: .33
-	},
-	Weapon.PROTON_GUN: {
-		WeaponProperty.NAME: "Proton gun",
-		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun3.tres"),
-		WeaponProperty.DAMAGE: 1.75,
-		WeaponProperty.FIRE_RATE: 1.3,
-		WeaponProperty.CRITICAL_CHANCE: .1,
-		Property.COST: 50,
-		Property.PRODUCTION_TIME: .47
-	},
-	Weapon.GUN4: {
-		WeaponProperty.NAME: "Gun #4",
-		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun4.tres"),
-		WeaponProperty.DAMAGE: 2.1,
-		WeaponProperty.FIRE_RATE: 1.2,
-		WeaponProperty.CRITICAL_CHANCE: .1,
-		Property.COST: 50,
-		Property.PRODUCTION_TIME: .52
-	},
-	Weapon.GUN4: {
-		WeaponProperty.NAME: "Gun #5",
-		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun5.tres"),
-		WeaponProperty.DAMAGE: 2.5,
-		WeaponProperty.FIRE_RATE: 1.2,
-		WeaponProperty.CRITICAL_CHANCE: .1,
-		Property.COST: 50,
-		Property.PRODUCTION_TIME: .73
-	},
-	Weapon.GUN4: {
-		WeaponProperty.NAME: "Gun #6",
-		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun6.tres"),
-		WeaponProperty.DAMAGE: 2.75,
-		WeaponProperty.FIRE_RATE: 1.2,
-		WeaponProperty.CRITICAL_CHANCE: .1,
-		Property.COST: 50,
-		Property.PRODUCTION_TIME: .56
-	}
-}
-
-# Perks
 
 enum PerkProperty {
 	NAME,
 	ICON,
 	SPEED,
-	ARMOR
+	ARMOR,
+	DOWNSIDES,
 }
 
 enum Perk {
@@ -100,26 +45,122 @@ enum Perk {
 	ARMOR_1
 }
 
+const WeaponRef = {
+	Weapon.MACHINE_GUN: {
+		WeaponProperty.NAME: "Heavy machine gun",
+		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun1.tres"),
+		WeaponProperty.DAMAGE: 1.5,
+		WeaponProperty.FIRE_RATE: .33,
+		WeaponProperty.CRITICAL_CHANCE: .025,
+		WeaponProperty.DOWNSIDES: {},
+		Property.COST: 285,
+		Property.PRODUCTION_TIME: .24
+	},
+	Weapon.LASER_GUN: {
+		WeaponProperty.NAME: "Light laser",
+		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun2.tres"),
+		WeaponProperty.DAMAGE: .98,
+		WeaponProperty.FIRE_RATE: 0.2,
+		WeaponProperty.CRITICAL_CHANCE: .05,
+		WeaponProperty.DOWNSIDES: {
+			PerkProperty.SPEED: -0.05,
+			PerkProperty.ARMOR: 0,
+		},
+		Property.COST: 384,
+		Property.PRODUCTION_TIME: .26
+	},
+	Weapon.PROTON_GUN: {
+		WeaponProperty.NAME: "Piercer",
+		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun3.tres"),
+		WeaponProperty.DAMAGE: 7.0,
+		WeaponProperty.FIRE_RATE: 1.0,
+		WeaponProperty.CRITICAL_CHANCE: .015,
+		WeaponProperty.DOWNSIDES: {
+			PerkProperty.SPEED: 0,
+			PerkProperty.ARMOR: 0,
+		},
+		Property.COST: 285,
+		Property.PRODUCTION_TIME: .28
+	},
+	Weapon.GUN4: {
+		WeaponProperty.NAME: "Rocket launcher",
+		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun4.tres"),
+		WeaponProperty.DAMAGE: 12,
+		WeaponProperty.FIRE_RATE: 1,
+		WeaponProperty.CRITICAL_CHANCE: .0115,
+		WeaponProperty.DOWNSIDES: {
+			PerkProperty.SPEED: 0,
+			PerkProperty.ARMOR: 0,
+		},
+		Property.COST: 403,
+		Property.PRODUCTION_TIME: .3
+	},
+	Weapon.GUN5: {
+		WeaponProperty.NAME: "Splitter",
+		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun5.tres"),
+		WeaponProperty.DAMAGE: 9,
+		WeaponProperty.FIRE_RATE: 1,
+		WeaponProperty.CRITICAL_CHANCE: .018,
+		WeaponProperty.DOWNSIDES: {
+			PerkProperty.SPEED: 0,
+			PerkProperty.ARMOR: 0,
+		},
+		Property.COST: 864,
+		Property.PRODUCTION_TIME: .32
+	},
+	Weapon.GUN6: {
+		WeaponProperty.NAME: "Kinetic attack",
+		WeaponProperty.ICON: preload("res://sprites/res/upgrade_icons/weapons/gun6.tres"),
+		WeaponProperty.DAMAGE: 45,
+		WeaponProperty.FIRE_RATE: 2.0,
+		WeaponProperty.CRITICAL_CHANCE: .1,
+		WeaponProperty.DOWNSIDES: {
+			PerkProperty.SPEED: 0,
+			PerkProperty.ARMOR: 0,
+		},
+		Property.COST: 604,
+		Property.PRODUCTION_TIME: .7
+	}
+}
+
+# Perks
 const PerkRef = {
 	Perk.MOBILITY_1: {
-		PerkProperty.NAME: "Moobster",
+		PerkProperty.NAME: "Mobility I",
 		PerkProperty.ICON: preload("res://sprites/res/upgrade_icons/perks/perk1.tres"),
-		PerkProperty.SPEED: 37.07,
-		PerkProperty.ARMOR: 0.00,
-		Property.COST: 50,
-		Property.PRODUCTION_TIME: .05
+		PerkProperty.SPEED: .05,
+		PerkProperty.ARMOR: 0,
+		PerkProperty.DOWNSIDES: {
+			WeaponProperty.DAMAGE: 0.0,
+			WeaponProperty.FIRE_RATE: 0.0,
+			WeaponProperty.CRITICAL_CHANCE: -10.0
+		},
+		Property.COST: 714,
+		Property.PRODUCTION_TIME: .07
 	},
 	Perk.ARMOR_1: {
-		PerkProperty.NAME: "Armster",
+		PerkProperty.NAME: "Armor I",
 		PerkProperty.ICON: preload("res://sprites/res/upgrade_icons/perks/perk2.tres"),
-		PerkProperty.SPEED: 0.00,
-		PerkProperty.ARMOR: 1000.0,
-		Property.COST: 50,
-		Property.PRODUCTION_TIME: .089
+		PerkProperty.SPEED: -0.02,
+		PerkProperty.ARMOR: .1,
+		PerkProperty.DOWNSIDES: {
+			WeaponProperty.DAMAGE: 0.0,
+			WeaponProperty.FIRE_RATE: 0.0,
+			WeaponProperty.CRITICAL_CHANCE: 0.0
+		},
+		Property.COST: 1182,
+		Property.PRODUCTION_TIME: .011
 	},
 }
 
-func get_upgrade_property(upgrade_property, upgrade_type, upgrade_id):
+func get_upgrade_property(upgrade_property, upgrade_type, upgrade_id, default_value = null):
+	if upgrade_id == -1:
+		return default_value
+
+	if Constants.DEBUG_MODE:
+		if upgrade_property == Property.COST:
+			return 0
+
 	match upgrade_type:
 		Type.WEAPON:
 			return WeaponRef[upgrade_id][upgrade_property]

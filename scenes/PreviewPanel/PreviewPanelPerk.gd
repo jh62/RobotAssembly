@@ -29,16 +29,29 @@ func _on_UpgradePreview_on_data_dropped() -> void:
 	Signals.emit_signal("on_upgrade_installed", Upgrades.Type.PERK, upgrade_installed)
 
 func update_preview() -> void:
+	var title_text : String
+	var mobility_text : String
+	var armor_text : String
+	var cost_text : String
+	var time_text : String
+
 	if upgrade_installed == -1:
-		label_title.text = "No module selected"
-		for label in labels.values():
-			label.text = "0.0"
-		return
+		title_text = "No module selected"
+		mobility_text = "0.0"
+		armor_text = "0.0"
+		cost_text = "0.0"
+		time_text = "0.0"
+	else:
+		var perk_ref : Dictionary = Upgrades.PerkRef.get(upgrade_installed)
 
-	var perk_ref : Dictionary = Upgrades.PerkRef.get(upgrade_installed)
+		title_text = str(perk_ref[Upgrades.PerkProperty.NAME])
+		mobility_text = str(perk_ref[Upgrades.PerkProperty.SPEED])
+		armor_text = str(perk_ref[Upgrades.PerkProperty.ARMOR])
+		cost_text = str(perk_ref[Upgrades.Property.COST])
+		time_text = str(perk_ref[Upgrades.Property.PRODUCTION_TIME])
 
-	label_title.text = str(perk_ref[Upgrades.PerkProperty.NAME])
-	labels.get("mobility").text = str(perk_ref[Upgrades.PerkProperty.SPEED])
-	labels.get("armor").text = str(perk_ref[Upgrades.PerkProperty.ARMOR])
-	labels.get("cost").text = str(perk_ref[Upgrades.Property.COST])
-	labels.get("time").text = str(perk_ref[Upgrades.Property.PRODUCTION_TIME])
+	label_title.text = title_text
+	labels.get("mobility").text = mobility_text
+	labels.get("armor").text = armor_text
+	labels.get("cost").text = cost_text
+	labels.get("time").text = time_text

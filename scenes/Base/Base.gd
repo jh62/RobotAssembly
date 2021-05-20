@@ -13,7 +13,7 @@ export var hitpoints := 1000.0
 export var is_active := true setget set_active
 export var production_rate := .01
 
-var order
+var order : Order
 var order_time := 0.0
 var production_queue = []
 
@@ -39,30 +39,29 @@ func _process(delta: float) -> void:
 
 	if !is_active:
 		return
-	if production_queue.empty():
+	if production_queue.empty() && order == null:
 		return
 
 	if order != null:
-		if order_time < order.get(Upgrades.Property.PRODUCTION_TIME):
-			order_time += get_process_delta_time()
+		if !order.is_done():
+			order.update(delta)
 			if side == Side.TEAM_PLAYER:
-				Signals.emit_signal("on_queue_step", order_time)
+				Signals.emit_signal("on_queue_step", order.build_time)
 			return
 	else:
-		order = production_queue.back()
-		order_time = 0.0
+		order = production_queue.front()
 		return
 
-	var blueprint = order.get("blueprint")
-	var weapon = order.get(Upgrades.Type.WEAPON, -1)
-	var perk = order.get(Upgrades.Type.PERK, -1)
+#	var blueprint = order.get("blueprint")
+#	var weapon = order.get(Upgrades.Type.WEAPON, -1)
+#	var perk = order.get(Upgrades.Type.PERK, -1)
 
 	var mech = MECH.instance()
 	mech.side = side
-	mech.initialize(blueprint, weapon, perk)
+	mech.initialize(order.blueprint, order.weapon_id, order.perk_id)
 
 	order = null
-	production_queue.pop_back()
+	production_queue.pop_front()
 
 	emit_signal("on_mech_spawned", mech)
 
@@ -90,16 +89,34 @@ func _on_build_requested(blueprint : Dictionary, amount : int, weapon : int, per
 	if perk == -1:
 		perk = blueprint.get(Robots.Property.PERK)
 
-	var order = {
-		"blueprint": blueprint,
-		Upgrades.Type.WEAPON: weapon,
-		Upgrades.Type.PERK: perk,
-		Upgrades.Property.PRODUCTION_TIME: time / to_make
-	}
-
 	for i in to_make:
-		production_queue.append(order)
+		var o := Order.new()
+		o.blueprint = blueprint
+		o.weapon_id = weapon
+		o.perk_id = perk
+		o.production_time = production_rate
+
+#		var order = {
+#			"blueprint": blueprint,
+#			Upgrades.Type.WEAPON: weapon,
+#			Upgrades.Type.PERK: perk,
+#			Upgrades.Property.PRODUCTION_TIME: production_rate
+#		}
+		production_queue.append(o)
 
 	if side == Side.TEAM_PLAYER:
-		Signals.emit_signal("on_build_begin", production_queue.size(), order.get(Upgrades.Property.PRODUCTION_TIME))
+		Signals.emit_signal("on_build_begin", production_queue.size(), production_rate)
 
+class Order:
+	var build_time := 0.0
+
+	var blueprint
+	var weapon_id
+	var perk_id
+	var production_time
+
+	func update(delta) -> void:
+		build_time += delta
+
+	func is_done()->bool:
+		return build_time >= production_time

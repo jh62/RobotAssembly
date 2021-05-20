@@ -1,19 +1,36 @@
 extends Node
 
-const available_weapons := [0,1,2,3]
-const available_perks := [0,1,2]
+signal on_funds_changed
 
-var funds := 500
+const available_weapons := [
+	Upgrades.Weapon.MACHINE_GUN,
+	Upgrades.INVALID_TYPE_OR_PROPERTY,
+	Upgrades.INVALID_TYPE_OR_PROPERTY,
+	Upgrades.INVALID_TYPE_OR_PROPERTY,
+	Upgrades.INVALID_TYPE_OR_PROPERTY,
+	Upgrades.INVALID_TYPE_OR_PROPERTY
+	]
+
+const available_perks := [
+	Upgrades.INVALID_TYPE_OR_PROPERTY,
+	Upgrades.INVALID_TYPE_OR_PROPERTY,
+	Upgrades.INVALID_TYPE_OR_PROPERTY
+]
+
+# Player options
+var upgrades_visible := true
+
+var funds := 1600 setget set_funds
 
 var MECH = {
-	Robots.Property.HITPOINTS: 60,
-	Robots.Property.SPEED: 14,
+	Robots.Property.HITPOINTS: 30,
+	Robots.Property.SPEED: 20,
 	Robots.Property.DAMAGE: 0,
 	Robots.Property.FIRE_RATE: 0,
 	Robots.Property.CRIT_CHANCE: 0,
 	Robots.Property.WEAPON: Upgrades.Weapon.MACHINE_GUN,
 	Robots.Property.PERK: -1,
-	Robots.Property.WEAKNESSES: [Upgrades.Weapon.LASER_GUN],
+	Robots.Property.WEAKNESSES: [],
 	Robots.Property.PRODUCTION_COST: 0,
 	Robots.Property.PRODUCTION_TIME: 2.0
 }
@@ -26,6 +43,9 @@ func _ready() -> void:
 	Signals.connect("on_upgrade_removed", self, "_on_upgrade_changed")
 	Signals.connect("on_PowerModule_collected", self, "_on_PowerModule_collected")
 
+	yield(get_tree(),"idle_frame")
+	emit_signal("on_funds_changed")
+
 func _on_upgrade_changed(upgrade_type, upgrade_id) -> void:
 	match upgrade_type:
 		Upgrades.Type.WEAPON:
@@ -34,4 +54,8 @@ func _on_upgrade_changed(upgrade_type, upgrade_id) -> void:
 			active_perk = upgrade_id
 
 func _on_PowerModule_collected(amount : int) -> void:
-	funds += amount
+	self.funds += amount
+
+func set_funds(new_value) -> void:
+	funds = clamp(new_value, 0, 999999)
+	emit_signal("on_funds_changed")

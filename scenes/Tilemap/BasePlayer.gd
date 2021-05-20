@@ -2,11 +2,19 @@ extends TileMap
 
 signal on_passage_toggle(cellv, blocked)
 
+const PASSAGE_TILES_ID := [3,4]
+
 var passage_tiles := {}
 
 func _ready() -> void:
-	for t in get_used_cells_by_id(3):
-		passage_tiles[t] = false
+	assert(get_used_cells_by_id(3).size() == 1, "Only one passage can be opened at a time!")
+	yield(get_tree(),"idle_frame")
+
+	for t in get_used_cells():
+		var cell := get_cellv(t)
+		if cell in PASSAGE_TILES_ID:
+			passage_tiles[t] = cell == 4
+			emit_signal("on_passage_toggle", t, cell == 4)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if passage_tiles.size() == 0:
@@ -16,10 +24,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		event = event as InputEventMouseButton
 		if !event.pressed && event.button_index == BUTTON_LEFT:
 			var cellv := world_to_map(event.position)
+			var cell := get_cellv(cellv)
 
-			if get_cellv(cellv) == -1 ||  get_cellv(cellv) == 3 && get_used_cells_by_id(3).size() <= 1 && get_cellv(cellv) != 4:
+			if !(cell in PASSAGE_TILES_ID):
 				return
 
-			passage_tiles[cellv] = !passage_tiles[cellv]
-			set_cellv(cellv, 4 if passage_tiles[cellv] else 3)
-			emit_signal("on_passage_toggle", cellv, passage_tiles[cellv])
+			for c in passage_tiles:
+				var is_selected = c == cellv
+				passage_tiles[c] = !is_selected
+				set_cellv(c, 3 if is_selected else 4)
+				emit_signal("on_passage_toggle", c, !is_selected)

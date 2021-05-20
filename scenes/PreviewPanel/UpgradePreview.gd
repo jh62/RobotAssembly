@@ -12,18 +12,18 @@ func can_drop_data(position: Vector2, data) -> bool:
 	return upgrade_type == data["upgrade_type"] && data["upgrade_id"] != upgrade_id
 
 func get_drag_data(position: Vector2):
-	if upgrade_id == -1:
-		return
-	else:
-		upgrade_id = -1
-
+	upgrade_id = Player.MECH[Robots.Property.WEAPON] # default weapon
 	update_preview()
 
 func drop_data(position: Vector2, data) -> void:
-#	$TextureRect.texture = data["texture"]
-#	emit_signal("on_data_dropped")
-	upgrade_type = data["upgrade_type"]
-	upgrade_id = data["upgrade_id"]
+	var data_upgrade_type = data["upgrade_type"]
+	var data_upgrade_id = data["upgrade_id"]
+
+	if data_upgrade_id == -1:
+		return
+
+	upgrade_type = data_upgrade_type
+	upgrade_id = data_upgrade_id
 	update_preview()
 
 func update_preview() -> void:

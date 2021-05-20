@@ -1,6 +1,7 @@
 extends Node
 
 enum Property {
+	NAME,
 	SIDE,
 	HITPOINTS,
 	SPEED,
@@ -16,9 +17,10 @@ enum Property {
 }
 
 # Enemy blueprints
-const MECH_I = {
-	Property.HITPOINTS: 60,
-	Property.SPEED: 14,
+const ROBOT_A1 = {
+	Property.NAME: "Centurion",
+	Property.HITPOINTS: 20,
+	Property.SPEED: 20,
 	Property.DAMAGE: 0,
 	Property.FIRE_RATE: 0,
 	Property.CRIT_CHANCE: 0,
@@ -27,4 +29,18 @@ const MECH_I = {
 	Property.WEAKNESSES: [Upgrades.Weapon.LASER_GUN],
 	Property.PRODUCTION_COST: 0,
 	Property.PRODUCTION_TIME: 2.0
+}
+
+const ROBOT_A2 = {
+	Property.NAME: "Pretorian",
+	Property.HITPOINTS: 100,
+	Property.SPEED: 80,
+	Property.DAMAGE: 0,
+	Property.FIRE_RATE: 0,
+	Property.CRIT_CHANCE: 0,
+	Property.WEAPON: Upgrades.Weapon.GUN6,
+	Property.PERK: -1,
+	Property.WEAKNESSES: [Upgrades.Weapon.GUN6],
+	Property.PRODUCTION_COST: 0,
+	Property.PRODUCTION_TIME: 4.3
 }

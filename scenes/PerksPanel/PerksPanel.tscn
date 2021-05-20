@@ -49,7 +49,6 @@ margin_top = 28.0
 margin_right = 24.0
 margin_bottom = 52.0
 upgrade_type = 1
-upgrade_id = 1
 
 [node name="PanelUpgrade3" parent="MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
@@ -58,4 +57,3 @@ margin_top = 56.0
 margin_right = 24.0
 margin_bottom = 80.0
 upgrade_type = 1
-upgrade_id = -1

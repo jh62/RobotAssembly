@@ -4,7 +4,7 @@ class_name Mech
 signal on_mech_die(position)
 signal on_critical_hit
 
-onready var health_bar := $ProgressBar
+onready var health_bar := $VBoxContainer/ProgressBar
 onready var lookeahed : float = $CollisionShape2D.shape.radius
 onready var fire_tracer := $Line2D # provisorio
 onready var timer_attack := $TimerAttack
@@ -31,6 +31,7 @@ var destination : Vector2
 var _initialized := false
 
 func _ready() -> void:
+	Signals.connect("toggle_view_upgrades", self, "_on_toggle_view_upgrades")
 	add_to_group(Groups.GROUP_MECH)
 	get_new_path()
 	health_bar.max_value = max_hitpoints
@@ -62,12 +63,33 @@ func initialize(model_blueprint : Dictionary, module_weapon : int, module_perk :
 
 	if Upgrades.PerkRef.has(module_perk):
 		perk = module_perk
-		hitpoints += Upgrades.PerkRef[module_perk][Upgrades.PerkProperty.ARMOR]
-		speed += Upgrades.PerkRef[module_perk][Upgrades.PerkProperty.SPEED]
 
-	print_debug(damage)
+		var downsides = Upgrades.PerkRef[module_perk].get(Upgrades.PerkProperty.DOWNSIDES)
+
+		if downsides && downsides.size() >= 1:
+			damage += downsides.get(Upgrades.WeaponProperty.DAMAGE)
+			fire_rate += downsides.get(Upgrades.WeaponProperty.FIRE_RATE)
+			crit_chance += downsides.get(Upgrades.WeaponProperty.CRITICAL_CHANCE)
+
+		hitpoints += hitpoints * Upgrades.PerkRef[module_perk][Upgrades.PerkProperty.ARMOR]
+		speed += speed * Upgrades.PerkRef[module_perk][Upgrades.PerkProperty.SPEED]
 
 	max_hitpoints = hitpoints
+
+
+	var icon_weapon := $VBoxContainer/UpgradeIcons/WeaponUpgrade
+	var icon_perk := $VBoxContainer/UpgradeIcons/PerkUpgrade
+
+	if weapon >= 0:
+		icon_weapon.texture = Upgrades.WeaponRef[weapon][Upgrades.WeaponProperty.ICON]
+
+	if perk >= 0:
+		icon_perk.texture = Upgrades.PerkRef[perk][Upgrades.PerkProperty.ICON]
+
+	icon_weapon.visible = weapon >= 0
+	icon_perk.visible = perk >= 0
+
+	$VBoxContainer.visible = Player.upgrades_visible
 
 	_initialized = true
 
@@ -180,8 +202,6 @@ func _on_TimerScan_timeout() -> void:
 
 		if _target == null || dist_to_target < global_position.distance_to(_target.global_position):
 			_target = t
-			if side == Side.TEAM_PLAYER:
-				_target.modulate = Color.red
 			break
 
 func _on_MechVII_on_critical_hit() -> void:
@@ -192,3 +212,6 @@ func _on_MechVII_on_critical_hit() -> void:
 # This is triggered when the players blocks/unblocks a passage tile.
 func on_passage_toggle() -> void:
 	pass
+
+func _on_toggle_view_upgrades() -> void:
+	$VBoxContainer.visible = Player.upgrades_visible

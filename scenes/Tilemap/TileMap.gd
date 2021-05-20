@@ -60,4 +60,3 @@ func _on_Entities_on_mech_spawned(mech) -> void:
 
 func _on_BasePlayer_on_passage_toggle(cellv, blocked) -> void:
 	astar.set_point_disabled(id(cellv), blocked)
-	print_debug(blocked)

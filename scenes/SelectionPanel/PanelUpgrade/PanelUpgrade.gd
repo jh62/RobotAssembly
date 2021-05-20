@@ -1,8 +1,8 @@
 tool
 extends Panel
 
-export(Upgrades.Type) var upgrade_type = Upgrades.Type.WEAPON setget set_updgrade_type
-export var upgrade_id := 0 setget set_upgrade_id
+export(Upgrades.Type) var upgrade_type := Upgrades.Type.WEAPON setget set_updgrade_type
+export var upgrade_id := -1 setget set_upgrade_id
 
 func _ready() -> void:
 	pass
@@ -37,7 +37,7 @@ func set_updgrade_type(type) -> void:
 	set_upgrade_id(upgrade_id)
 
 func set_upgrade_id(id : int) -> void:
-	upgrade_id = clamp(id, -1, 999)
+	upgrade_id = max(-1,id)
 
 	var upgrade
 

@@ -11,8 +11,8 @@ func _ready() -> void:
 	start_pos = global_position
 	var r := randi()%100
 	end_pos = start_pos + Vector2(r * sin(r), -20 + randi()%40)
-	end_pos.x = clamp(end_pos.x, 320, 320 + 288)
-	end_pos.y = clamp(end_pos.y, 153, 153 + 272)
+	end_pos.x = clamp(end_pos.x, 0, get_viewport_rect().size.x)
+	end_pos.y = global_position.y
 	$Tween.stop_all()
 	$Tween.interpolate_property($Sprite,"scale", Vector2(.75,1.5), Vector2(1.0,1.0), .14)
 	$Tween.start()
@@ -32,13 +32,16 @@ func _process(delta: float) -> void:
 	else:
 		queue_free()
 
+var critical_weight := 3.22
+var dps_weight := 4
+var prod_time_weight := 2.78
+
 func _on_PowerModule_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventScreenDrag:
 		$CPUParticles2D.emitting = true
 		collected = true
 		$Sprite.visible = false
 		Signals.emit_signal("on_PowerModule_collected", randi()%100)
-
 
 func _on_PowerModule_mouse_entered() -> void:
 	if Input.is_mouse_button_pressed(BUTTON_LEFT):
