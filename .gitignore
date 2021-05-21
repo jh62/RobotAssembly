@@ -1,2 +1,5 @@
-.exported/*
-.import/*
+/.exported/*
+/.import/*
+*.zip
+*.html
+*.js
