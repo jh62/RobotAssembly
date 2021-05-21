@@ -3,3 +3,11 @@
 *.zip
 *.html
 *.js
+*.zip
+*.html
+*.js
+*.pck
+*.wasm
+*.apk
+*.md5
+*.stex

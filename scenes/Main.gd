@@ -7,6 +7,7 @@ func _ready() -> void:
 	randomize()
 	panel_weapons.set_upgrades(Player.available_weapons)
 	panel_perks.set_upgrades(Player.available_perks)
+	print_debug(Upgrades.get_weapon_cost(Upgrades.Weapon.MACHINE_GUN))
 
 func _process(delta: float) -> void:
 	pass

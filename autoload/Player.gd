@@ -20,7 +20,7 @@ const available_perks := [
 # Player options
 var upgrades_visible := true
 
-var funds := 1600 setget set_funds
+var funds := (187*6) setget set_funds
 
 var MECH = {
 	Robots.Property.HITPOINTS: 30,

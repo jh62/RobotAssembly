@@ -39,11 +39,12 @@ func process(delta) -> void:
 	if spawn_list.empty():
 		return
 
-	last_build_time += delta
-
 	if penalty_time > 0:
 		penalty_time = max(penalty_time - delta, 0.0)
+		print_debug(penalty_time)
 		return
+
+	last_build_time += delta
 
 	if last_build_time >= build_wait_time:
 		_on_player_build_begin()

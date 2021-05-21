@@ -1,5 +1,40 @@
 extends Node
 
+func get_perk_cost(perk) -> int:
+	if perk == -1:
+		return 0
+
+	perk = PerkRef[perk]
+
+	var speed = perk.get(PerkProperty.SPEED, 0)
+	var armor = perk.get(PerkProperty.ARMOR, 0)
+	var regen = 0
+	var build_time = perk.get(Property.PRODUCTION_TIME, 0)
+
+	var cost = ((speed * SPEED_WEIGHT)+(armor*ARMOR_WEIGHT)+(regen*REGEN_WEIGHT)+(build_time*BUILD_TIME_WEIGHT)) * 2000
+	return floor(cost) as int
+
+func get_weapon_cost(weapon) -> int:
+	if weapon == -1:
+		return 0
+
+	weapon = WeaponRef[weapon]
+
+	var critical_chance = weapon.get(WeaponProperty.CRITICAL_CHANCE, 0)
+	var dps = weapon.get(WeaponProperty.DAMAGE, 0) * (1 / weapon.get(WeaponProperty.FIRE_RATE, 0))
+	var build_time = weapon.get(Property.PRODUCTION_TIME, 0)
+
+	var cost = ((critical_chance * CRITICAL_WEIGHT) + (dps * DPS_WEIGHT) + (build_time * BUILD_TIME_WEIGHT)) * 10
+	return floor(cost) as int
+
+const CRITICAL_WEIGHT := 3.22
+const DPS_WEIGHT := 4
+const BUILD_TIME_WEIGHT := 2.78
+
+const SPEED_WEIGHT := 1.5
+const ARMOR_WEIGHT := 2.72
+const REGEN_WEIGHT := 3
+
 const INVALID_TYPE_OR_PROPERTY := -1
 
 enum Type {
@@ -53,7 +88,7 @@ const WeaponRef = {
 		WeaponProperty.FIRE_RATE: .33,
 		WeaponProperty.CRITICAL_CHANCE: .025,
 		WeaponProperty.DOWNSIDES: {},
-		Property.COST: 285,
+		Property.COST: 187,
 		Property.PRODUCTION_TIME: .24
 	},
 	Weapon.LASER_GUN: {

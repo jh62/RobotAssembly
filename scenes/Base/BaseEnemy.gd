@@ -7,7 +7,7 @@ func _ready() -> void:
 	base_ai = BaseAI.new(self)
 	base_ai.penalty_time = 3.0
 
-	for i in 20:
+	for i in 50:
 		base_ai.spawn_list.append(Robots.ROBOT_A1)
 
 	add_child(base_ai)

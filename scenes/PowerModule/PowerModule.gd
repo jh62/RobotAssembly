@@ -6,6 +6,7 @@ var xx := 0.0
 
 var collected := false
 var decay := 0.0
+var drop_amount := 0.0
 
 func _ready() -> void:
 	start_pos = global_position
@@ -41,13 +42,13 @@ func _on_PowerModule_input_event(viewport: Node, event: InputEvent, shape_idx: i
 		$CPUParticles2D.emitting = true
 		collected = true
 		$Sprite.visible = false
-		Signals.emit_signal("on_PowerModule_collected", randi()%100)
+		Signals.emit_signal("on_PowerModule_collected", drop_amount)
 
 func _on_PowerModule_mouse_entered() -> void:
 	if Input.is_mouse_button_pressed(BUTTON_LEFT):
 		$CPUParticles2D.emitting = true
 		collected = true
 		$Sprite.visible = false
-		Signals.emit_signal("on_PowerModule_collected", randi()%100)
+		Signals.emit_signal("on_PowerModule_collected", drop_amount)
 
 

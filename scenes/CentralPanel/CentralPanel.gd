@@ -21,7 +21,7 @@ func _ready() -> void:
 	update_production_projections()
 
 func set_quantity(amount : int) -> void:
-	production_quantity = clamp(amount, 0, 10)
+	production_quantity = clamp(amount, 1, 10)
 	label_quantity.text = str(production_quantity)
 
 func _on_Button_button_up() -> void:
@@ -43,7 +43,7 @@ func _on_funds_changed() -> void:
 
 func _on_ButtonBuild_button_up() -> void:
 	var costs = label_cost.text.to_int()
-	assert(costs < Player.funds)
+	assert(costs <= Player.funds)
 
 	Signals.emit_signal("on_build_requested", Player.MECH, production_quantity, Player.active_weapon, Player.active_perk, float(label_time.text))
 	Player.funds -= costs
@@ -106,8 +106,8 @@ func _on_Panel_gui_input(event: InputEvent) -> void:
 			return
 
 		if drag_dir.x < 0 || drag_dir.y > 0:
-			label_quantity.text = str(label_quantity.text.to_int() - 1)
+			set_quantity(label_quantity.text.to_int() - 1)
 		elif drag_dir.x > 0 || drag_dir.y < 0:
-			label_quantity.text = str(label_quantity.text.to_int() + 1)
+			set_quantity(label_quantity.text.to_int() + 1)
 
 		amount_dragging_pos = get_global_mouse_position()

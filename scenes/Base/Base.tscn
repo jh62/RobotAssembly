@@ -1,7 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://sprites/spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://scenes/Base/Base.gd" type="Script" id=2]
+[ext_resource path="res://sprites/res/ui/production_halt_off.tres" type="Texture" id=3]
+[ext_resource path="res://sprites/res/ui/production_halt_on.tres" type="Texture" id=4]
+[ext_resource path="res://sprites/res/base_font_12px.tres" type="DynamicFont" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 16 )
@@ -63,3 +66,38 @@ percent_visible = false
 __meta__ = {
 "_edit_use_anchors_": true
 }
+
+[node name="TextureButton" type="TextureButton" parent="Sprite"]
+anchor_left = -1.16667
+anchor_top = -0.166667
+anchor_right = -0.5
+anchor_bottom = 0.5
+margin_left = -12.0
+margin_top = -12.0
+margin_right = -12.0
+margin_bottom = -12.0
+rect_min_size = Vector2( 16, 16 )
+toggle_mode = true
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 4 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ProgressBar2" type="ProgressBar" parent="Sprite"]
+margin_left = -16.0
+margin_right = 16.0
+margin_bottom = 10.0
+custom_fonts/font = ExtResource( 5 )
+max_value = 3.0
+step = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimerReleaseUnits" type="Timer" parent="."]
+
+[connection signal="toggled" from="Sprite/TextureButton" to="." method="_on_TextureButton_toggled"]
+[connection signal="timeout" from="TimerReleaseUnits" to="." method="_on_TimerReleaseUnits_timeout"]

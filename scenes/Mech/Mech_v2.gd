@@ -1,7 +1,7 @@
 extends Area2D
 class_name Mech
 
-signal on_mech_die(position)
+signal on_mech_die(position, credits_dropped)
 signal on_critical_hit
 
 onready var health_bar := $VBoxContainer/ProgressBar
@@ -111,13 +111,14 @@ func on_attacked_by(attacker) -> void:
 	var dam = attacker.damage if !weakness.has(attacker.weapon) else attacker.damage * 2.5
 
 	if attacker.crit_chance > randf():
-		dam *= 3
+		dam *= 2
 		emit_signal("on_critical_hit")
 
 	hitpoints -= dam
 
 	if hitpoints <= 0:
-		emit_signal("on_mech_die", global_position)
+		var drop = (Upgrades.get_weapon_cost(weapon) + Upgrades.get_perk_cost(perk)) * rand_range(.18, .33)
+		emit_signal("on_mech_die", global_position, drop)
 		queue_free()
 
 func get_new_path() -> void:

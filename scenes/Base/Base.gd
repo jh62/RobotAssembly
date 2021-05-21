@@ -5,6 +5,7 @@ signal on_mech_spawned(node)
 
 const HITPOINTS_BAR_POS_ENEMY := Vector2(-24,-32)
 const HITPOINTS_BAR_POS_PLAYER := Vector2(-24,24)
+const MAX_COMPLETED_QUEUE := 3
 
 const MECH := preload("res://scenes/Mech/Mech_v2.tscn")
 
@@ -12,16 +13,20 @@ export(Side.Team) var side
 export var hitpoints := 1000.0
 export var is_active := true setget set_active
 export var production_rate := .01
+export var unit_release_delay := .5
 
 var order : Order
 var order_time := 0.0
 var production_queue = []
+var completed_queue = []
+var production_halted := false
 
 func _ready() -> void:
 	add_to_group(Groups.GROUP_BASE)
 	$Sprite/ProgressBar.max_value = hitpoints
 	$Sprite/ProgressBar.value = hitpoints
 	$Sprite/ProgressBar.step = 0.1
+
 	set_active(is_active)
 
 	match side:
@@ -29,8 +34,14 @@ func _ready() -> void:
 			$Sprite/ProgressBar.rect_position = HITPOINTS_BAR_POS_PLAYER
 			Signals.connect("on_build_requested", self, "_on_build_requested")
 			Signals.connect("on_build_cancel", self, "_on_build_cancel")
+
+			$Sprite/ProgressBar2.step = 1
+			$Sprite/ProgressBar2.value = 0
+			$Sprite/ProgressBar2.max_value = MAX_COMPLETED_QUEUE
 		Side.TEAM_ENEMY:
 			$Sprite/ProgressBar.rect_position = HITPOINTS_BAR_POS_ENEMY
+			$Sprite/TextureButton.queue_free()
+			$Sprite/ProgressBar2.queue_free()
 
 #	$Timer_Production.start(production_rate)
 
@@ -39,6 +50,7 @@ func _process(delta: float) -> void:
 
 	if !is_active:
 		return
+
 	if production_queue.empty() && order == null:
 		return
 
@@ -52,10 +64,6 @@ func _process(delta: float) -> void:
 		order = production_queue.front()
 		return
 
-#	var blueprint = order.get("blueprint")
-#	var weapon = order.get(Upgrades.Type.WEAPON, -1)
-#	var perk = order.get(Upgrades.Type.PERK, -1)
-
 	var mech = MECH.instance()
 	mech.side = side
 	mech.initialize(order.blueprint, order.weapon_id, order.perk_id)
@@ -63,10 +71,15 @@ func _process(delta: float) -> void:
 	order = null
 	production_queue.pop_front()
 
-	emit_signal("on_mech_spawned", mech)
-
 	if side == Side.TEAM_PLAYER:
 		Signals.emit_signal("on_order_completed", production_queue.size())
+
+	if production_halted && completed_queue.size() < MAX_COMPLETED_QUEUE:
+		completed_queue.append(mech)
+		$Sprite/ProgressBar2.value += 1
+		return
+
+	emit_signal("on_mech_spawned", mech)
 
 func on_attacked_by(attacker) -> void:
 	hitpoints = max(hitpoints - attacker.damage, 0.0)
@@ -96,12 +109,6 @@ func _on_build_requested(blueprint : Dictionary, amount : int, weapon : int, per
 		o.perk_id = perk
 		o.production_time = production_rate
 
-#		var order = {
-#			"blueprint": blueprint,
-#			Upgrades.Type.WEAPON: weapon,
-#			Upgrades.Type.PERK: perk,
-#			Upgrades.Property.PRODUCTION_TIME: production_rate
-#		}
 		production_queue.append(o)
 
 	if side == Side.TEAM_PLAYER:
@@ -120,3 +127,23 @@ class Order:
 
 	func is_done()->bool:
 		return build_time >= production_time
+
+func _on_TextureButton_toggled(button_pressed: bool) -> void:
+	production_halted = button_pressed
+
+	if !production_halted:
+		$TimerReleaseUnits.start(unit_release_delay)
+	else:
+		$TimerReleaseUnits.stop()
+
+
+func _on_TimerReleaseUnits_timeout() -> void:
+	if completed_queue.empty():
+		$TimerReleaseUnits.stop()
+		return
+
+	var mech = completed_queue.pop_front()
+
+	if mech != null:
+		$Sprite/ProgressBar2.value -= 1
+		emit_signal("on_mech_spawned", mech)
