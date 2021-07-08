@@ -1,7 +1,7 @@
 tool
 extends Panel
 
-export(Upgrades.Type) var upgrade_type := Upgrades.Type.WEAPON setget set_updgrade_type
+export(Upgrade.Type) var upgrade_type := Upgrade.Type.WEAPON setget set_updgrade_type
 export var upgrade_id := -1 setget set_upgrade_id
 
 func _ready() -> void:
@@ -42,17 +42,17 @@ func set_upgrade_id(id : int) -> void:
 	var upgrade
 
 	match upgrade_type:
-		Upgrades.Type.WEAPON:
-			upgrade = Upgrades.WeaponRef.get(upgrade_id, false)
-		Upgrades.Type.PERK:
-			upgrade = Upgrades.PerkRef.get(upgrade_id, false)
+		Upgrade.Type.WEAPON:
+			upgrade = Upgrade.WeaponRef.get(upgrade_id, false)
+		Upgrade.Type.PERK:
+			upgrade = Upgrade.PerkRef.get(upgrade_id, false)
 
 	if upgrade:
 		match upgrade_type:
-			Upgrades.Type.WEAPON:
-				$TextureRect.texture = upgrade.get(Upgrades.WeaponProperty.ICON)
-			Upgrades.Type.PERK:
-				$TextureRect.texture = upgrade.get(Upgrades.PerkProperty.ICON)
+			Upgrade.Type.WEAPON:
+				$TextureRect.texture = upgrade.get(Upgrade.WeaponProperty.ICON)
+			Upgrade.Type.PERK:
+				$TextureRect.texture = upgrade.get(Upgrade.PerkProperty.ICON)
 	else:
 		upgrade_id = -1
 		$TextureRect.texture = null

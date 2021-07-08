@@ -18,7 +18,13 @@ signal on_upgrade_installed(upgrade_type, upgrade_id)
 signal on_upgrade_removed(upgrade_type, upgrade_id)
 
 # "res://scenes/PowerModule/PowerModule.gd"
-signal on_PowerModule_collected(amount)
+signal on_PowerModule_collected()
+
+# "res://autoload/Player.gd"
+signal on_PowerModule_consumed()
 
 #
 signal toggle_view_upgrades()
+
+# "res://Main.gd"
+signal on_enemy_funds_increase(amount)

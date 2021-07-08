@@ -14,14 +14,26 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/Base/Base.gd"
 }, {
+"base": "Node",
+"class": "BaseAI",
+"language": "GDScript",
+"path": "res://autoload/BaseAI.gd"
+}, {
 "base": "Area2D",
 "class": "Mech",
 "language": "GDScript",
 "path": "res://scenes/Mech/Mech_v2.gd"
+}, {
+"base": "Node",
+"class": "Upgrade",
+"language": "GDScript",
+"path": "res://autoload/Upgrades.gd"
 } ]
 _global_script_class_icons={
 "Base": "",
-"Mech": ""
+"BaseAI": "",
+"Mech": "",
+"Upgrade": ""
 }
 
 [application]
@@ -80,6 +92,11 @@ texture={
 2d_physics/layer_1="world"
 2d_physics/layer_2="mechs"
 2d_physics/layer_3="bases"
+
+[physics]
+
+2d/default_gravity=0
+2d/default_gravity_vector=Vector2( 0, 0 )
 
 [rendering]
 

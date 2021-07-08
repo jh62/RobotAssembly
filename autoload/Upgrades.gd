@@ -1,6 +1,8 @@
 extends Node
 
-func get_perk_cost(perk) -> int:
+class_name Upgrade
+
+static func get_perk_cost(perk) -> int:
 	if perk == -1:
 		return 0
 
@@ -14,7 +16,7 @@ func get_perk_cost(perk) -> int:
 	var cost = ((speed * SPEED_WEIGHT)+(armor*ARMOR_WEIGHT)+(regen*REGEN_WEIGHT)+(build_time*BUILD_TIME_WEIGHT)) * 2000
 	return floor(cost) as int
 
-func get_weapon_cost(weapon) -> int:
+static func get_weapon_cost(weapon) -> int:
 	if weapon == -1:
 		return 0
 
@@ -50,7 +52,7 @@ enum Property{
 # Weapons
 
 enum Weapon {
-	MACHINE_GUN,
+	MACHINE_GUN = 0,
 	LASER_GUN,
 	PROTON_GUN,
 	GUN4,
@@ -170,7 +172,7 @@ const PerkRef = {
 			WeaponProperty.FIRE_RATE: 0.0,
 			WeaponProperty.CRITICAL_CHANCE: -10.0
 		},
-		Property.COST: 714,
+		Property.COST: 100,
 		Property.PRODUCTION_TIME: .07
 	},
 	Perk.ARMOR_1: {
@@ -183,7 +185,7 @@ const PerkRef = {
 			WeaponProperty.FIRE_RATE: 0.0,
 			WeaponProperty.CRITICAL_CHANCE: 0.0
 		},
-		Property.COST: 1182,
+		Property.COST: 180,
 		Property.PRODUCTION_TIME: .011
 	},
 }

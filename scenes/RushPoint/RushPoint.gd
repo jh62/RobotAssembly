@@ -14,8 +14,9 @@ func _process(delta: float) -> void:
 	if !alive:
 		return
 
-	if hitpoints == 0.0:
+	if hitpoints <= 0.0:
 		alive = false
+		$Sprite.play("destroyed")
 		$CollisionShape2D.disabled = true
 		emit_signal("on_rushpoint_destroyed")
 

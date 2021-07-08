@@ -5,7 +5,7 @@ signal on_mech_spawned(node)
 
 const HITPOINTS_BAR_POS_ENEMY := Vector2(-24,-32)
 const HITPOINTS_BAR_POS_PLAYER := Vector2(-24,24)
-const MAX_COMPLETED_QUEUE := 3
+const MAX_COMPLETED_QUEUE := 10
 
 const MECH := preload("res://scenes/Mech/Mech_v2.tscn")
 
@@ -73,6 +73,7 @@ func _process(delta: float) -> void:
 
 	if side == Side.TEAM_PLAYER:
 		Signals.emit_signal("on_order_completed", production_queue.size())
+		SoundManager.play_sfx("robot_done")
 
 	if production_halted && completed_queue.size() < MAX_COMPLETED_QUEUE:
 		completed_queue.append(mech)
@@ -82,7 +83,17 @@ func _process(delta: float) -> void:
 	emit_signal("on_mech_spawned", mech)
 
 func on_attacked_by(attacker) -> void:
+	if !is_active:
+		return
+
 	hitpoints = max(hitpoints - attacker.damage, 0.0)
+
+	if hitpoints <= 0:
+		is_active = false
+		$AnimatedSprite.play("explosion")
+		SoundManager.play_sfx("robot_explode")
+		yield($AnimatedSprite,"animation_finished")
+		$Sprite.play("destroyed")
 
 func set_active(active : bool) -> void:
 	is_active = active
